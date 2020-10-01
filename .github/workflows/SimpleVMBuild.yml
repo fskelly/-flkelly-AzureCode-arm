@@ -5,18 +5,6 @@ on:
 name: SimpleVMBuild
 
 jobs:
-
-  build:
-  runs-on: windows-2019
-  steps:
-  - uses: actions/checkout@v1
-  - name: PowerSHell RG Check and create
-    run: 
-      env:
-        rgName: arm-actions
-        rgLocation: westeurope
-    shell: powershell
-
   build:
     runs-on: ubuntu-latest
     steps:
