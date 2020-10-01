@@ -1,5 +1,9 @@
 on: [push]
 
+env:
+  AZURE_LOCATION: westeurope
+  AZURE_RG: "arm-actions"
+
 name: AZCliRGCheck_ARMDeploy
 
 jobs:
@@ -25,7 +29,7 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $rgLocation; fi
+          if [ $(az group exists --name {{ env.AZURE_RG }}) = false ]; then az group create --name {{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}; fi
 
   build-and-deploy:
     needs: AZCli-CheckRGExists
@@ -50,7 +54,7 @@ jobs:
 
     - name: Deploy ARM template
       env:
-        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
+#        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy.json
         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
         LOCATION: {{steps.azcliscript.env.rglocation}}
