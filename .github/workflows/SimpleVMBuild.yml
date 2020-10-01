@@ -12,7 +12,7 @@ jobs:
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true 
         
     - name: Run Azure PowerShell script
@@ -22,7 +22,7 @@ jobs:
         rgLocation: westeurope
       with:
         inlineScript: |
-          if (!(Get-AzResourceGroup -Name $rgName -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name $rgName -Location $rgLocation}
+          if (!(Get-AzResourceGroup -Name arm-actions -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name arm-actions -Location westeurope}
         azPSVersion: '3.1.0'
 
   build-and-deploy:
