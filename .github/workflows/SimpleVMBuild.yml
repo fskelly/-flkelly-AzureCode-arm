@@ -6,7 +6,7 @@ name: SimpleVMBuild
 
 jobs:
   ResourceGroupCheck:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     
     - name: Login via Az module
