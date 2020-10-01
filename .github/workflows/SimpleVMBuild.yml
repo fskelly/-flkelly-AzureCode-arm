@@ -5,14 +5,49 @@ on:
 name: SimpleVMBuild
 
 jobs:
+
+  build:
+  runs-on: windows-2019
+  steps:
+  - uses: actions/checkout@v1
+  - name: PowerSHell RG Check and create
+    run: 
+      env:
+        rgName: arm-actions
+        rgLocation: westeurope
+    shell: powershell
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Login via Az module
+      uses: azure/login@v1.1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        enable-AzPSSession: true 
+        
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      env:
+        rgName: arm-actions
+        rgLocation: westeurope
+      with:
+        inlineScript: |
+          if (!(Get-AzResourceGroup -Name $rgName -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name $rgName -Location $rgLocation}
+        azPSVersion: '3.1.0'
+
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: azure/login@v1
+    - name: Checkout Master 
+      uses: actions/checkout@master
+    - name: ARM Login
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - uses: azure/arm-deploy@v1
+    - name: arm Deploy
+      uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.SUB_ID }}
         resourceGroupName: github-action-arm-rg
