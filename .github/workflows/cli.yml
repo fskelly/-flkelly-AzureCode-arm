@@ -41,6 +41,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.SUB_ID }}
-        resourceGroupName: {{steps.azcliscript.env.rgName}}
+        resourceGroupName: ${{  steps.azcliscript.env.rgName  }}
         template: ./virtualMachine/arm/SimpleVM1/deploy.json
         parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
