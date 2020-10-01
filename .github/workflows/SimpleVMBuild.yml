@@ -23,10 +23,11 @@ jobs:
 ##      with:
 ##        inlineScript: |
       run: |
-        if (!(Get-AzResourceGroup -Name arm-actions -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name arm-actions -Location westeurope}
+        if (!(Get-AzResourceGroup -Name $rgName -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name $rgName -Location $rgLocation}
       azPSVersion: '3.1.0'
 
   build-and-deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Master 
