@@ -1,0 +1,24 @@
+on: 
+  push:
+##    paths:
+##    - 'virtualMachine/arm/SimpleVM1/**'
+name: SimpleVMBuildRG
+
+jobs:
+  build-and-deploy:
+    needs: ResourceGroupCheck
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Master 
+      uses: actions/checkout@master
+    - name: ARM Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: arm Deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUB_ID }}
+        resourceGroupName: github-action-arm-rg
+        template: ./virtualMachine/arm/SimpleVM1/deploywithRG.json
+        parameters: ./virtualMachine/arm/SimpleVM1/parameters1withRG.json

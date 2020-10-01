@@ -13,22 +13,17 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-##        enable-AzPSSession: true 
+        enable-AzPSSession: true 
         
     - name: Run Azure PowerShell script
-##      uses: azure/powershell@v1
+      uses: azure/powershell@v1
       env:
         rgName: arm-actions
         rgLocation: westeurope
-##      with:
-##        inlineScript: |
-      run: |
-        write-host $rgName
-        Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
-        $condition = Get-AzResourceGroup $rgName -ErrorAction SilentlyContinue;
-        if ($condition -eq $null)
-        {New-AzResourceGroup -Name $rgName -Location $rgLocation}
-##      azPSVersion: '3.1.0'
+      with:
+       inlineScript: |
+        Get-AzVM -ResourceGroupName "$rgName"
+      azPSVersion: 'latest'
 
   build-and-deploy:
     needs: ResourceGroupCheck
