@@ -44,13 +44,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-     - name: arm Deploy
-       uses: azure/arm-deploy@v1
-       with:
-         subscriptionId: ${{ secrets.SUB_ID }}
-         resourceGroupName: arm-actions
-         template: ./virtualMachine/arm/SimpleVM1/deploy.json
-         parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
+    - name: arm Deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUB_ID }}
+        resourceGroupName: arm-actions
+        template: ./virtualMachine/arm/SimpleVM1/deploy.json
+        parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
 
 #     - name: Deploy ARM template
 #       env:
