@@ -1,6 +1,6 @@
 on: [push]
 
-name: AzureCLISampleForFile
+name: AZCliRGCheck_ARMDeploy
 
 jobs:
 
@@ -23,7 +23,10 @@ jobs:
         inlineScript: |
           RESOURCEGROUPNAME="arm-actions"
           LOCATION="westeurope"
-          if [ $(az group exists --name $RESOURCEGROUPNAME) = false ]; then     az group create --name $RESOURCEGROUPNAME --location $LOCATION; fi
+          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $LOCATION; fi
+        env:
+          rgName: arm-actions
+          rgLocation: westeurope
           
   build-and-deploy:
     needs: AZCli-CheckRGExists
@@ -39,6 +42,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.SUB_ID }}
-        resourceGroupName: github-action-arm-rg
+        resourceGroupName: arm-actions
         template: ./virtualMachine/arm/SimpleVM1/deploy.json
         parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
