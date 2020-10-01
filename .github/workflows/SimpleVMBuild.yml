@@ -5,7 +5,7 @@ on:
 name: SimpleVMBuild
 
 jobs:
-  build:
+  ResourceGroupCheck:
     runs-on: ubuntu-latest
     steps:
     
@@ -13,7 +13,7 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true 
+##        enable-AzPSSession: true 
         
     - name: Run Azure PowerShell script
 ##      uses: azure/powershell@v1
@@ -23,11 +23,13 @@ jobs:
 ##      with:
 ##        inlineScript: |
       run: |
-        if (!(Get-AzResourceGroup -Name $rgName -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name $rgName -Location $rgLocation}
+        $condition = Get-AzResourceGroup $rgName -ErrorAction SilentlyContinue;
+        if ($condition -eq $null)
+        {New-AzResourceGroup -Name $rgName -Location $rgLocation}
 ##      azPSVersion: '3.1.0'
 
   build-and-deploy:
-    needs: build
+    needs: ResourceGroupCheck
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Master 
