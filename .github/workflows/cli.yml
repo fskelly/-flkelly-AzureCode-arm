@@ -25,11 +25,10 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          RESOURCEGROUPNAME="${{steps.azcliscript.rgName}}"
-          LOCATION="westeurope"
-          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $LOCATION; fi
+##          RESOURCEGROUPNAME="${{steps.azcliscript.rgName}}"
+##          LOCATION="westeurope"
+          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $rgLocation; fi
 
-          
   build-and-deploy:
     needs: AZCli-CheckRGExists
     runs-on: ubuntu-latest
@@ -44,6 +43,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.SUB_ID }}
-        resourceGroupName: arm-actions
+        resourceGroupName: {{steps.azcliscript.env.rgName}}
         template: ./virtualMachine/arm/SimpleVM1/deploy.json
         parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
