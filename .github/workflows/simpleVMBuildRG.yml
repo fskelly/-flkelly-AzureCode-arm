@@ -6,7 +6,6 @@ name: SimpleVMBuildRG
 
 jobs:
   build-and-deploy:
-    needs: ResourceGroupCheck
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Master 
