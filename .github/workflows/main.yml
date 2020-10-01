@@ -1,0 +1,17 @@
+on: [push]
+name: buildDemoEnvironemnt
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUB_ID }}
+        resourceGroupName: github-action-arm-rg
+        template: ./virtualMachine/arm/SimpleVM1/deploy.json
+        parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
