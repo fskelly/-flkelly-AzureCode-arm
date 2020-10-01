@@ -18,6 +18,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.SUB_ID }}
-        ##resourceGroupName: github-action-arm-rg
+        resourceGroupName: github-action-arm-rg
         template: ./virtualMachine/arm/SimpleVM1/deploywithRG.json
         parameters: ./virtualMachine/arm/SimpleVM1/parameters1withRG.json
