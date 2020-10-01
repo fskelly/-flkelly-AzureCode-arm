@@ -23,7 +23,7 @@ jobs:
       with:
        inlineScript: |
         Get-AzVM -ResourceGroupName "$rgName"
-      azPSVersion: 'latest'
+      azPSVersion: latest
 
   build-and-deploy:
     needs: ResourceGroupCheck
