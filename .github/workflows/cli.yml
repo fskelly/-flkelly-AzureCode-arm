@@ -31,16 +31,28 @@ jobs:
     needs: AZCli-CheckRGExists
     runs-on: ubuntu-latest
     steps:
+
     - name: Checkout Master 
       uses: actions/checkout@master
+
     - name: ARM Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: arm Deploy
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.SUB_ID }}
-        resourceGroupName: ${{  steps.azcliscript.env.rgName  }}
-        template: ./virtualMachine/arm/SimpleVM1/deploy.json
-        parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
+
+    # - name: arm Deploy
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     subscriptionId: ${{ secrets.SUB_ID }}
+    #     resourceGroupName: ${{  steps.azcliscript.env.rgName  }}
+    #     template: ./virtualMachine/arm/SimpleVM1/deploy.json
+    #     parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
+
+    - name: Deploy ARM template
+      env:
+        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
+        ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy.json
+        PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
+        LOCATION: {{steps.azcliscript.env.rglocation}}
+      run: |
+        az deployment sub create --location ${LOCATION} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
