@@ -9,6 +9,7 @@ name: AZCliRGCheck_ARMDeploy
 jobs:
 
   build_id:
+    runs-on: ubuntu-latest
     steps:
       - name: 'Set build id'
         id: build_id
@@ -71,6 +72,5 @@ jobs:
       env:
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
-        LOCATION: {{steps.azcliscript.env.rglocation}}
         run: |
           az group deployment create --name ${{ steps.build_id.outputs.id }} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
