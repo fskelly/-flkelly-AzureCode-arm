@@ -4,7 +4,7 @@ env:
   AZURE_LOCATION: westeurope
   AZURE_RG: arm-actions
 
-name: AZCliRGCheck_ARMDeploy
+name: AZCliRGCheck_ARMDeploy2
 
 jobs:
 
@@ -24,6 +24,7 @@ jobs:
           BUILD_ID: ${{ steps.build_id.outputs.id }}
 
   AZCli-CheckRGExists:
+    needs: build_id
     runs-on: ubuntu-latest
     steps:
     
@@ -46,7 +47,7 @@ jobs:
         inlineScript: |
           if [ $(az group exists --name ${{ env.AZURE_RG }}) = false ]; then az group create --name ${{ env.AZURE_RG }} --location ${{ env.AZURE_LOCATION }}; fi
 
-  build-and-deploy:
+  cli-build-and-deploy:
     needs: AZCli-CheckRGExists
     runs-on: ubuntu-latest
     steps:
@@ -72,5 +73,7 @@ jobs:
       env:
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
-        run: |
-          az group deployment create --name ${{ steps.build_id.outputs.id }} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az group deployment create --name ${{ steps.build_id.outputs.id }} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}

@@ -7,7 +7,7 @@ env:
   AZURE_LOCATION: westeurope
   AZURE_RG: arm-actions
 
-name: AZCliRGCheck_ARMDeploy
+name: AZCliRGCheck_ARMDeploy1
 
 jobs:
 
