@@ -27,7 +27,7 @@ jobs:
         inlineScript: |
           RESOURCEGROUPNAME="${{steps.azcliscript.rgName}}"
           LOCATION="westeurope"
-          if [ $(az group exists --name $RESOURCEGROUPNAME) = false ]; then az group create --name $RESOURCEGROUPNAME --location $LOCATION; fi
+          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $LOCATION; fi
 
           
   build-and-deploy:
