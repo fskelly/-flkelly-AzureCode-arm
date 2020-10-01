@@ -2,7 +2,7 @@ on: [push]
 
 env:
   AZURE_LOCATION: westeurope
-  AZURE_RG: "arm-actions"
+  AZURE_RG: arm-actions
 
 name: AZCliRGCheck_ARMDeploy
 
@@ -44,19 +44,19 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # - name: arm Deploy
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.SUB_ID }}
-    #     resourceGroupName: ${{  steps.azcliscript.env.rgName  }}
-    #     template: ./virtualMachine/arm/SimpleVM1/deploy.json
-    #     parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
+     - name: arm Deploy
+       uses: azure/arm-deploy@v1
+       with:
+         subscriptionId: ${{ secrets.SUB_ID }}
+         resourceGroupName: arm-actions
+         template: ./virtualMachine/arm/SimpleVM1/deploy.json
+         parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
 
-    - name: Deploy ARM template
-      env:
-#        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
-        ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
-        PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
-##        LOCATION: {{steps.azcliscript.env.rglocation}}
-      run: |
-        az deployment sub create --location ${{ env.AZURE_LOCATION }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
+#     - name: Deploy ARM template
+#       env:
+# #        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
+#         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
+#         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
+# ##        LOCATION: {{steps.azcliscript.env.rglocation}}
+#       run: |
+#         az deployment sub create --location ${{ env.AZURE_LOCATION }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
