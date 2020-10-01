@@ -9,7 +9,7 @@
         "value": "AzureRocks1@31*59"
       },
       "dnsLabelPrefix": {
-        "value": "fskvm2"
+        "value": "fskvm"
       },
       "vmName": 
       {
