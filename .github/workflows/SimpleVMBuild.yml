@@ -16,7 +16,7 @@ jobs:
         enable-AzPSSession: true 
         
     - name: Run Azure PowerShell script
-      uses: azure/powershell@v1
+##      uses: azure/powershell@v1
       env:
         rgName: arm-actions
         rgLocation: westeurope
