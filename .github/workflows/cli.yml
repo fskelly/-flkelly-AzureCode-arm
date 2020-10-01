@@ -57,6 +57,6 @@ jobs:
 #        RESOURCE_GROUP: {{steps.azcliscript.env.rgName}}
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy.json
         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
-        LOCATION: {{steps.azcliscript.env.rglocation}}
+##        LOCATION: {{steps.azcliscript.env.rglocation}}
       run: |
-        az deployment sub create --location ${LOCATION} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
+        az deployment sub create --location ${{ env.AZURE_LOCATION }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
