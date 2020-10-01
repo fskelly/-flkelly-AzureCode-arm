@@ -71,5 +71,6 @@ jobs:
       env:
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
         PARAM_FILE: ./virtualMachine/arm/SimpleVM1/parameters1.json
+        DEPLOY_NAME: deploy-(date +%s)
       run: |
-        az group deployment create --name deploy-(date +%s) --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
+        az group deployment create --name @${DEPLOY_NAME} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
