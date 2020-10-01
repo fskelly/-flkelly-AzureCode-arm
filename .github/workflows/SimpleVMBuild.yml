@@ -1,5 +1,8 @@
-on: [push]
-name: buildDemoEnvironemnt
+on: 
+  push:
+    paths:
+    - 'virtualMachine/arm/SimpleVM1/**'
+name: SimpleVMBuild
 
 jobs:
   build-and-deploy:
