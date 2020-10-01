@@ -24,7 +24,7 @@ jobs:
 ##        inlineScript: |
       run: |
         if (!(Get-AzResourceGroup -Name $rgName -ErrorAction SilentlyContinue)) {New-AzResourceGroup -Name $rgName -Location $rgLocation}
-      azPSVersion: '3.1.0'
+##      azPSVersion: '3.1.0'
 
   build-and-deploy:
     needs: build
