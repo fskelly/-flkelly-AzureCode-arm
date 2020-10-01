@@ -1,7 +1,7 @@
-on: 
-  push:
-    paths:
-    - 'virtualMachine/arm/SimpleVM1/**'
+# on: 
+#   push:
+#     paths:
+#     - 'virtualMachine/arm/SimpleVM1/**'
 
 env:
   AZURE_LOCATION: westeurope

@@ -1,4 +1,7 @@
-on: [push]
+on: 
+  push:
+    paths:
+    - 'virtualMachine/arm/SimpleVM1/**'
 
 env:
   AZURE_LOCATION: westeurope
@@ -7,23 +10,8 @@ env:
 name: AZCliRGCheck_ARMDeploy2
 
 jobs:
-  build_id:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Set build id'
-        id: build_id
-        # add a step output `steps.build_id.outputs.id` as the unique id
-        run: echo "::set-output name=id::$(date +%s)"
-      - name: 'Save build id'
-        # store the build id to a folder that we can later cache.
-        run: |
-          mkdir -p .build-id 
-          echo $BUILD_ID > .build-id/id
-        env:
-          BUILD_ID: ${{ steps.build_id.outputs.id }}
 
   AZCli-CheckRGExists:
-    needs: build_id
     runs-on: ubuntu-latest
     steps:
     
@@ -59,14 +47,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # - name: arm Deploy
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId: ${{ secrets.SUB_ID }}
-    #     resourceGroupName: arm-actions
-    #     template: ./virtualMachine/arm/SimpleVM1/deploy.json
-    #     parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
-
     - name: Deploy with AZ CLI commands
       env:
         ARM_FILE: ./virtualMachine/arm/SimpleVM1/deploy1.json
@@ -74,4 +54,6 @@ jobs:
         DEPLOY_NAME: deploy-(date +%s)
       run: |
         now=$(date +"%d_%m_%Y_%ss")
-        az group deployment create --name ${now} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
+        deploy=deploy
+        deployment="${deploy}-${now}"
+        az group deployment create --name ${deployment} --resource-group ${{ env.AZURE_RG }} --template-file ${ARM_FILE} --parameters @${PARAM_FILE}
