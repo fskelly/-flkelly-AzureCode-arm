@@ -23,6 +23,7 @@ jobs:
 ##      with:
 ##        inlineScript: |
       run: |
+        write-host $rgName
         Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
         $condition = Get-AzResourceGroup $rgName -ErrorAction SilentlyContinue;
         if ($condition -eq $null)
