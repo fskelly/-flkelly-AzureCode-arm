@@ -4,7 +4,7 @@ name: AzureCLISampleForFile
 
 jobs:
 
-  build-and-deploy:
+  AZCli-CheckRGExists:
     runs-on: ubuntu-latest
     steps:
     
@@ -24,3 +24,21 @@ jobs:
           RESOURCEGROUPNAME="arm-actions"
           LOCATION="westeurope"
           if [ $(az group exists --name $RESOURCEGROUPNAME) = false ]; then     az group create --name $RESOURCEGROUPNAME --location $LOCATION; fi
+          
+  build-and-deploy:
+    needs: AZCli-CheckRGExists
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Master 
+      uses: actions/checkout@master
+    - name: ARM Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: arm Deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUB_ID }}
+        resourceGroupName: github-action-arm-rg
+        template: ./virtualMachine/arm/SimpleVM1/deploy.json
+        parameters: ./virtualMachine/arm/SimpleVM1/parameters1.json
