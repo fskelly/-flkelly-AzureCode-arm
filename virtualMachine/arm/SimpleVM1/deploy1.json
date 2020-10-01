@@ -45,7 +45,7 @@
       }
     },
     "variables": {
-      "suffix": "[uniqueString(resourceGroup().id, resourceGroup().location)]",
+      "suffix": "[uniqueString(subscription().subscriptionId)]",
       "VMName": "[substring(toLower(concat(parameters('vmName'), variables('suffix'))),0,14)]",
       "storageAccountName": "[substring(concat('diag',variables('VMName'), variables('suffix')), 0, 23)]",
       "nicName": "[concat(variables('vmName'),'-nic')]",
