@@ -17,13 +17,14 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Azure CLI script file
+      id: azcliscript
       uses: azure/CLI@v1
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          RESOURCEGROUPNAME="arm-actions"
+          RESOURCEGROUPNAME="${{steps.azcliscript.rgName}}"
           LOCATION="westeurope"
-          if [ $(az group exists --name $rgName) = false ]; then az group create --name $rgName --location $LOCATION; fi
+          if [ $(az group exists --name $RESOURCEGROUPNAME) = false ]; then az group create --name $RESOURCEGROUPNAME --location $LOCATION; fi
         env:
           rgName: arm-actions
           rgLocation: westeurope
